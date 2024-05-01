@@ -1,14 +1,14 @@
 import torch.nn as nn
 
-def ResidualSeries(num_filters, block_count, use_skip_connections):
+def ConvolutionalSeries(num_filters, block_count, use_skip_connections):
     blocks = []
     for _ in range(block_count):
-        blocks.append(ResidualBlock(num_filters, use_skip_connections))
+        blocks.append(ConvolutionalBlock(num_filters, use_skip_connections))
     return nn.Sequential(*blocks)
 
-class ResidualBlock(nn.Module):
+class ConvolutionalBlock(nn.Module):
     def __init__(self, num_filters, use_skip_connection):
-        super(ResidualBlock, self).__init__()
+        super(ConvolutionalBlock, self).__init__()
 
         self.use_skip_connection = use_skip_connection
 
@@ -49,7 +49,7 @@ class DeepCNN(nn.Module):
         self.batch1 = nn.BatchNorm2d(16)
         self.relu1 = nn.ReLU()
     
-        self.res_series = ResidualSeries(16, res_block_count, use_skip_connections)
+        self.res_series = ConvolutionalSeries(16, res_block_count, use_skip_connections)
         
         self.poolN = nn.MaxPool2d(kernel_size=2)
         
